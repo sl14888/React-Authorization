@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Divider, Form, Input } from 'antd';
+import { Button, Checkbox, Col, Divider, Form, Input, Row } from 'antd';
 
 const RegisterPage = () => {
   const onFinish = (values) => {
@@ -10,8 +10,8 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="register">
-      <div className="register-wrapper">
+    <Row type="flex" justify="center" align="middle" style={{ height: '100vh' }}>
+      <Col xs={20} sm={16} md={12} lg={8} xl={6} className="wrapper">
         <Divider className="register-divider">Register</Divider>
 
         <Form
@@ -85,8 +85,8 @@ const RegisterPage = () => {
             Or <Link to="/login">Sign in!</Link>
           </Form.Item>
         </Form>
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 };
 
