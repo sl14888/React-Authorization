@@ -1,0 +1,32 @@
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  &-divider .ant-divider-inner-text {
+    font-size: 32px;
+  }
+
+  &-wrapper {
+    padding: 50px;
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    border-radius: 5px;
+  }
+
+  &-form {
+    max-width: 100%;
+    width: 350px;
+  }
+
+  &-form {
+    &-forgot {
+      float: right;
+    }
+
+    &-button {
+      width: 100%;
+    }
+  }
+
+}

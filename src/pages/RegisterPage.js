@@ -6,7 +6,7 @@ const RegisterPage = () => {
     <div>
       <h1>Register</h1>
       <p>
-        Already have an account? <Link to="/register">Sign in</Link>
+        Already have an account? <Link to="/login">Sign in</Link>
       </p>
     </div>
   );
