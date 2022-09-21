@@ -7,7 +7,6 @@ import { removeUser } from '../store/slices/userSlice';
 const HomePage = () => {
   const { isAuth, email } = useAuth();
   const dispatch = useDispatch();
-  console.log(isAuth);
   return isAuth ? (
     <div>
       <h1>Wellcome</h1>

@@ -10,7 +10,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (email, password) => {
+  const handleLogin = (email, password, setLoading) => {
     const errorMessage = () => {
       message.error({
         content:
@@ -25,6 +25,7 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         console.log(user);
+        setLoading(false);
         dispatch(
           setUser({
             email: user.email,
@@ -35,6 +36,7 @@ const Login = () => {
         navigate('/');
       })
       .catch((error) => {
+        setLoading(false);
         console.log(error);
         errorMessage();
       });

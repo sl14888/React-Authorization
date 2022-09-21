@@ -4,10 +4,14 @@ import { Link } from 'react-router-dom';
 
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
+import { useAuth } from '../hooks/useAuth';
 
 const FormItem = ({ title, handleClick }) => {
+  const [loading, setLoading] = React.useState(false);
+
   const onFinish = (values) => {
-    handleClick(values.email, values.password);
+    setLoading(!loading);
+    handleClick(values.email, values.password, setLoading);
   };
 
   /* eslint-disable no-template-curly-in-string */
@@ -79,14 +83,24 @@ const FormItem = ({ title, handleClick }) => {
       </Form.Item>
       {title === 'Login' ? (
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button">
+          <Button
+            loading={loading}
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+          >
             Log in
           </Button>
           Or <Link to="/register">register now!</Link>
         </Form.Item>
       ) : (
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="register-form-button">
+          <Button
+            loading={loading}
+            type="primary"
+            htmlType="submit"
+            className="register-form-button"
+          >
             Sign Up
           </Button>
           Or <Link to="/login">Sign in!</Link>
