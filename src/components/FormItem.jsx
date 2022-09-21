@@ -7,34 +7,38 @@ import { Button, Checkbox, Form, Input } from 'antd';
 
 const FormItem = ({ title, handleClick }) => {
   const onFinish = (values) => {
-    // console.log('Received values of form: ', values);
-    // console.log('login: ', values.username);
-    // console.log('pass: ', values.password);
-    handleClick(values.username, values.password);
+    handleClick(values.email, values.password);
+  };
+
+  /* eslint-disable no-template-curly-in-string */
+  const validateMessages = {
+    required: '${label} is required!',
+    types: {
+      email: '${label} is not a valid email!',
+      number: '${label} is not a valid number!',
+    },
+    number: {
+      range: '${label} must be between ${min} and ${max}',
+    },
   };
 
   return (
     <Form
       name="form"
       className="form"
+      validateMessages={validateMessages}
       initialValues={{ remember: true }}
       onFinish={onFinish}
     >
-      <Form.Item
-        name="username"
-        rules={[{ required: true, message: 'Please input your Username!' }]}
-      >
+      <Form.Item name="email" rules={[{ type: 'email', required: true }]} hasFeedback>
         <Input
+          type="email"
           prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder="Username"
+          placeholder="Email"
         />
       </Form.Item>
 
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: 'Please input your Password!' }]}
-        hasFeedback
-      >
+      <Form.Item name="password" rules={[{ required: true, min: 6 }]} hasFeedback>
         <Input.Password
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
@@ -49,7 +53,6 @@ const FormItem = ({ title, handleClick }) => {
           rules={[
             {
               required: true,
-              message: 'Please confirm your password!',
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
