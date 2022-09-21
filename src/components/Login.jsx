@@ -29,6 +29,7 @@ const Login = () => {
         dispatch(
           setUser({
             email: user.email,
+            password: password,
             id: user.uid,
             token: user.accessToken,
           })

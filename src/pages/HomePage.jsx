@@ -1,16 +1,18 @@
+import { Col, Divider, Row } from 'antd';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import Profile from '../components/Profile';
 import { useAuth } from '../hooks/useAuth';
-import { removeUser } from '../store/slices/userSlice';
 
 const HomePage = () => {
-  const { isAuth, email } = useAuth();
-  const dispatch = useDispatch();
+  const { isAuth } = useAuth();
   return isAuth ? (
     <div>
-      <h1>Wellcome</h1>
-      <button onClick={() => dispatch(removeUser())}>Log out from {email}</button>
+      <Row type="flex" justify="center" align="middle" style={{ height: '100vh' }}>
+        <Col xs={20} sm={16} md={12} lg={8} xl={6}>
+          <Profile />
+        </Col>
+      </Row>
     </div>
   ) : (
     <Navigate to="/login" replace />

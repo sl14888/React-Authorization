@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { useAuth } from '../hooks/useAuth';
 
 const FormItem = ({ title, handleClick }) => {
   const [loading, setLoading] = React.useState(false);
