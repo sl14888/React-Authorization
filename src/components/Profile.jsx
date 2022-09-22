@@ -4,9 +4,11 @@ import { Avatar, Card, Divider, Tooltip } from 'antd';
 import { useAuth } from '../hooks/useAuth';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../store/slices/userSlice';
+import EditProfile from './EditProfile';
 
 const Profile = () => {
   const { email, password } = useAuth();
+  const [modalOpen, setModalOpen] = React.useState(false);
   const dispatch = useDispatch();
 
   return (
@@ -17,12 +19,11 @@ const Profile = () => {
           <LogoutOutlined onClick={() => dispatch(removeUser())} />
         </Tooltip>,
         <Tooltip placement="topLeft" title="Edit your profile" arrowPointAtCenter>
-          <EditOutlined key="edit" />
+          <EditOutlined onClick={() => setModalOpen(true)} key="edit" />
         </Tooltip>,
       ]}
     >
       <Divider>Welcome to Your Profile!</Divider>
-
       <Avatar
         shape="square"
         src="https://lh3.googleusercontent.com/a-/ACNPEu_FUmzcaRo0bCNA-RtlXz0dZ4b6KdxGIU4HrVFmfA=s360-p-rw-no"
@@ -36,6 +37,7 @@ const Profile = () => {
       <div className="card-content">
         <span>Your Password:</span> {password}
       </div>
+      <EditProfile setModalOpen={setModalOpen} modalOpen={modalOpen} />
     </Card>
   );
 };
