@@ -1,7 +1,14 @@
 import React from 'react';
 
 import { Avatar, Divider, Input, Form, Modal, Button } from 'antd';
-import { getAuth, updateEmail, updatePassword, updateProfile } from 'firebase/auth';
+import {
+  getAuth,
+  updateEmail,
+  updatePassword,
+  signInWithEmailAndPassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from 'firebase/auth';
 
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../hooks/useAuth';
@@ -9,32 +16,43 @@ import { setUser } from '../store/slices/userSlice';
 
 const EditProfile = ({ modalOpen, setModalOpen }) => {
   const { email, password } = useAuth();
+  const [form] = Form.useForm();
+
   const dispatch = useDispatch();
 
   const auth = getAuth();
 
-  const onFinish = (values) => {
-    console.log(values);
+  const emailValue = Form.useWatch('email', form);
+  const passValue = Form.useWatch('password', form);
 
-    auth.currentUser.reload().then(() => {
-      updateEmail(auth.currentUser, values.email)
-        .then(() => {
-          console.log('email update on ' + values.email);
-          setModalOpen(false);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+  const onUpdateEmail = () => {
+    updateEmail(auth.currentUser, emailValue)
+      .then(() => {
+        console.log('email update on ' + emailValue);
+        dispatch(
+          setUser({
+            email: emailValue,
+          })
+        );
+      })
+      .catch((error) => {
+        console.error('email', error);
+      });
+  };
 
-      updatePassword(auth.currentUser, values.password)
-        .then(() => {
-          console.log('pass update on ' + values.password);
-          setModalOpen(false);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    });
+  const onUpdatePassword = () => {
+    updatePassword(auth.currentUser, passValue)
+      .then(function () {
+        console.log('pass update on ', passValue);
+        dispatch(
+          setUser({
+            password: passValue,
+          })
+        );
+      })
+      .catch(function (error) {
+        console.error('error pass', error);
+      });
   };
 
   return (
@@ -52,7 +70,7 @@ const EditProfile = ({ modalOpen, setModalOpen }) => {
         style={{ margin: '0 auto', display: 'flex' }}
       />
       <Divider />
-      <Form name="form" onFinish={onFinish}>
+      <Form name="form" form={form}>
         <div className="card-content">
           <span>Your Email:</span>
           <Form.Item name="email" rules={[{ type: 'email', required: true }]} hasFeedback>
@@ -65,9 +83,15 @@ const EditProfile = ({ modalOpen, setModalOpen }) => {
             <Input.Password type="password" placeholder={password} />
           </Form.Item>
         </div>
+        <Divider />
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Submit
+          <Button type="primary" onClick={onUpdateEmail} className="login-form-button">
+            Update Email
+          </Button>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" onClick={onUpdatePassword} className="login-form-button">
+            Update Password
           </Button>
         </Form.Item>
       </Form>
