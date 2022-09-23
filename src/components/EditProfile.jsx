@@ -1,21 +1,17 @@
 import React from 'react';
 
 import { Avatar, Divider, Input, Form, Modal, Button } from 'antd';
-import {
-  getAuth,
-  updateEmail,
-  updatePassword,
-  signInWithEmailAndPassword,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
-} from 'firebase/auth';
+import { getAuth, updateEmail, updatePassword } from 'firebase/auth';
 
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../hooks/useAuth';
 import { setUser } from '../store/slices/userSlice';
+import Swal from 'sweetalert2';
 
 const EditProfile = ({ modalOpen, setModalOpen }) => {
   const { email, password } = useAuth();
+  const [loading, setLoading] = React.useState(false);
+
   const [form] = Form.useForm();
 
   const dispatch = useDispatch();
@@ -26,33 +22,66 @@ const EditProfile = ({ modalOpen, setModalOpen }) => {
   const passValue = Form.useWatch('password', form);
 
   const onUpdateEmail = () => {
-    updateEmail(auth.currentUser, emailValue)
-      .then(() => {
-        console.log('email update on ' + emailValue);
-        dispatch(
-          setUser({
-            email: emailValue,
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Your email details will be replaced with new ones!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#1890ff',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+
+        updateEmail(auth.currentUser, emailValue)
+          .then(() => {
+            setLoading(false);
+
+            console.log('email update on ' + emailValue);
+            dispatch(
+              setUser({
+                email: emailValue,
+                password: password,
+              })
+            );
           })
-        );
-      })
-      .catch((error) => {
-        console.error('email', error);
-      });
+          .catch((error) => {
+            console.error('email', error);
+          });
+      }
+    });
   };
 
   const onUpdatePassword = () => {
-    updatePassword(auth.currentUser, passValue)
-      .then(function () {
-        console.log('pass update on ', passValue);
-        dispatch(
-          setUser({
-            password: passValue,
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Your Password details will be replaced with new ones!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#1890ff',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then((result) => {
+      setLoading(true);
+      if (result.isConfirmed) {
+        updatePassword(auth.currentUser, passValue)
+          .then(function () {
+            setLoading(false);
+
+            console.log('pass update on ', passValue);
+            dispatch(
+              setUser({
+                email: email,
+                password: passValue,
+              })
+            );
           })
-        );
-      })
-      .catch(function (error) {
-        console.error('error pass', error);
-      });
+          .catch(function (error) {
+            console.error('error pass', error);
+          });
+      }
+    });
   };
 
   return (
@@ -77,20 +106,31 @@ const EditProfile = ({ modalOpen, setModalOpen }) => {
             <Input placeholder={email} />
           </Form.Item>
         </div>
+        <Form.Item>
+          <Button
+            type="primary"
+            loading={loading}
+            onClick={onUpdateEmail}
+            className="login-form-button"
+          >
+            Update Email
+          </Button>
+        </Form.Item>
+
         <div className="card-content">
           <span>Your Password:</span>
           <Form.Item name="password" rules={[{ required: true, min: 6 }]} hasFeedback>
             <Input.Password type="password" placeholder={password} />
           </Form.Item>
         </div>
-        <Divider />
+
         <Form.Item>
-          <Button type="primary" onClick={onUpdateEmail} className="login-form-button">
-            Update Email
-          </Button>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" onClick={onUpdatePassword} className="login-form-button">
+          <Button
+            type="primary"
+            loading={loading}
+            onClick={onUpdatePassword}
+            className="login-form-button"
+          >
             Update Password
           </Button>
         </Form.Item>
