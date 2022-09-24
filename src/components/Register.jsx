@@ -32,7 +32,7 @@ const Register = () => {
             token: user.accessToken,
           })
         );
-        navigate('/');
+        navigate('/register/step2');
       })
       .catch((error) => {
         setLoading(false);

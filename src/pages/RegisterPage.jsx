@@ -7,8 +7,7 @@ const RegisterPage = () => {
   return (
     <Row type="flex" justify="center" align="middle" style={{ height: '100vh' }}>
       <Col xs={20} sm={16} md={12} lg={8} xl={6} className="wrapper">
-        <StepSwiper />
-
+        <StepSwiper step={0} />
         <Divider className="register-divider">Register</Divider>
         <Register />
       </Col>

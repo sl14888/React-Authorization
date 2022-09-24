@@ -2,9 +2,9 @@ import React from 'react';
 import { Steps } from 'antd';
 const { Step } = Steps;
 
-const StepSwiper = () => {
+const StepSwiper = ({ step }) => {
   return (
-    <Steps current={0}>
+    <Steps current={step}>
       <Step />
       <Step />
       <Step />

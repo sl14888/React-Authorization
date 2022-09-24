@@ -5,6 +5,8 @@ const initialState = {
   password: null,
   token: null,
   id: null,
+  firstName: null,
+  lastName: null,
 };
 
 const userSlice = createSlice({
@@ -23,9 +25,13 @@ const userSlice = createSlice({
       state.password = null;
       state.id = null;
     },
+    setProfile(state, action) {
+      state.firstName = action.payload.firstName;
+      state.lastName = action.payload.lastName;
+    },
   },
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const { setUser, removeUser, setProfile } = userSlice.actions;
 
 export default userSlice.reducer;
